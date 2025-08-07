@@ -17,7 +17,7 @@ const store = useMainCompStore();
 
         </div>
         <div class="container">
-            <button class="start my-button" @click="store.changeStart">
+            <button class="start my-button" @click="store.changeStart" @keydown.enter="store.changeStartFocus">
                 Start
             </button>
         </div>
@@ -106,6 +106,6 @@ const store = useMainCompStore();
 }
 
 .start:focus {
-    outline: 5px solid #08e926;
+     outline: 5px solid #e90808;
 }
 </style>

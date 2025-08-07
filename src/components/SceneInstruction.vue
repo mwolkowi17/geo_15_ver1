@@ -1,9 +1,25 @@
 <script setup lang="ts">
+import { onMounted } from 'vue';
+import { useMainCompStore } from '../stores/appStores'
+
+const store = useMainCompStore();
+
+onMounted(() => {
+  console.log("instrukcja")
+  const elementToFocus = document.querySelector(".dalej")
+  //dodanie warunku propsu
+  if (elementToFocus&&store.ifInstructionFocusOn===true) {
+    (elementToFocus as HTMLElement).focus();
+  }
+
+})
 
 const textToDisplay = "Gra składa się z dwóch poziomów – łatwego i trudnego." +
   " Rzucasz kostką i posuwasz się do przodu o tyle pól, ile oczek wyrzuciła kostka." +
   "Na początku gry otrzymujesz trzy szanse."
+
 const textToDisplay2 = "– na polach oznaczonych znakiem zapytania czeka Cię pytanie."
+
 const textToDisplay3 = "– na polach oznaczonych znakiem wykrzyknika  czekają Cię zasadzki." +
   "Każda błędna odpowiedź – to strata 1 szansy." +
   "Utrata wszystkich szans oznacza zakończenie gry. Dobra odpowiedź – to kolejny rzut kostką." +
@@ -17,11 +33,15 @@ const textToDisplay3 = "– na polach oznaczonych znakiem wykrzyknika  czekają 
         <h1 class="instrukcja-title">Zasady gry</h1>
         <div class="kontener-instrukcja">
           <span class="instrukcja" v-html="textToDisplay"></span>
-          <span class="instrukcja" v-html="textToDisplay2"></span>
+          <div class="icon-text">
+            <img class="pytajnik" alt="" src="../assets/znak_zapytania_do_instrukcji.png" />
+            <span class="instrukcja" v-html="textToDisplay2"></span>
+          </div>
+          <img class="wykrzyknik" alt="" src="../assets/wykrzyknik_do_instrukcji.png" />
           <span class="instrukcja" v-html="textToDisplay3"></span>
         </div>
-        <button class="dalej anim1" @click="$emit('koniec-instrukcja')"
-          @keydown.enter="$emit('koniec-instrukcja-focus')" role="button">Dalej</button>
+        <button class="dalej my-button anim1" @click="store.changeLeveOneChoice"
+          @keydown.enter="store.changeLeveOneChoiceFocus" role="button">Dalej</button>
       </div>
     </div>
   </div>
@@ -44,7 +64,7 @@ const textToDisplay3 = "– na polach oznaczonych znakiem wykrzyknika  czekają 
   flex-direction: column;
   height: 1080px;
   justify-content: center;
-  align-items:flex-end;
+  align-items: flex-end;
 
 }
 
@@ -57,6 +77,8 @@ const textToDisplay3 = "– na polach oznaczonych znakiem wykrzyknika  czekają 
   background-color: white;
   flex-wrap: wrap;
   margin-right: 3em;
+  border: 4px solid black;
+  border-radius: 25px;
 }
 
 .instrukcja-title {
@@ -86,6 +108,10 @@ const textToDisplay3 = "– na polach oznaczonych znakiem wykrzyknika  czekają 
   /* position: absolute; */
 }
 
+.icon-text {
+  display: block
+}
+
 .instrukcja {
   color: rgb(0, 0, 0);
   /* font-size: 41px; */
@@ -95,29 +121,51 @@ const textToDisplay3 = "– na polach oznaczonych znakiem wykrzyknika  czekają 
   font-family: "Proxima Nova", sans-serif;
   line-height: 1.7;
   position: relative;
+  /* display: block; */
+}
+
+.pytajnik {
+  position: relative;
+  /* top: 283px;
+  left: 355px; */
+  margin-top: .8em;
+  margin-bottom: -1.2em;
+  margin-right: 1em;
+  /* left: -90px;
+  top: 35px */
+}
+
+.wykrzyknik {
+  position: relative;
+  /* top: 475px;
+  left: 715px; */
+  margin-top: .8em;
+  margin-bottom: -1.2em;
+  margin-right: 1em;
+
 }
 
 .dalej {
-  /* background-image: url("../assets/przycisk_dalej_imie.png"); */
-  color: rgb(29, 56, 80);
-  font-size: 4.3em;
-  font-style: bold;
-  font-weight: 700;
-  font-family: "Proxima Nova", sans-serif;
-  /* position: absolute; */
-  /* top: 820px;
-  left: 850px; */
-  width: 4em;
-  height: 1.5em;
-  border: 4px solid rgb(0, 187, 255);
-  /* display: flex;
-  align-items: center;
-  justify-content: center;
-  box-sizing: border-box;
-  overflow: hidden;           /* Prevent overflow *
-  transform-origin: center;  */
-  transition: .2s ease-in-out;
-  margin-top: -0.3em;
+    font-size: 4.3em;
+    font-style: bold;
+    font-weight: 700;
+    font-family: "Proxima Nova", sans-serif;
+    background-size: 432px 168px;
+    background-position: -2px -3px;
+    background-repeat: no-repeat;
+    border-radius: 50px;
+    margin-top: -.1em;
+    margin-bottom: -.8em;
+    width: 4em;
+    height: 1.5em;
+    border: 4px solid rgb(0, 0, 0);
+    background-color: rgb(225, 178, 0);
+    overflow: visible;
+}
 
+.dalej:focus {
+  /* border: 4px solid #08e926; */
+  /* outline: thick double #08e926; */
+  outline: 5px solid #e90808;
 }
 </style>
