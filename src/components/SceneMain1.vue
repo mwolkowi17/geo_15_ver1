@@ -1,5 +1,7 @@
 <script setup lang="ts">
+import { useScene1Store } from '../stores/scene1Store';
 
+const storeScene1 = useScene1Store()
 </script>
 
 <template>
@@ -12,6 +14,7 @@
         <div class="ikona-meta" role="img" alt="ikona" aria-label="miejsce mety gry">
             <h2 class="meta">Meta</h2>
         </div>
+        <div class="pionek1" :style="{ left: storeScene1.pionek_left + 'px', top: storeScene1.pionek_top + 'px' }"></div>
         <div class="container">
             <div class="container-inner">
                 <h2 class="title">Poziom 1</h2>
@@ -21,11 +24,18 @@
                     <img class="szansa" src="../assets/szansa.png">
                     <img class="szansa" src="../assets/szansa.png">
                 </div>
-                <button class="rzut1 my-button anim1" role="button">Rzuć kostką</button>
+                <button class="rzut1 my-button anim1" role="button" @click="storeScene1.kostka_click">Rzuć kostką</button>
                
             </div>
         </div>
-         <img class="kostka" src="../assets/kostka_3oczka.png"
+      <div class="kostka" :class="{
+        'kostka1image1': storeScene1.isSet1,
+        'kostka1image2': storeScene1.isSet2,
+        'kostka1image3': storeScene1.isSet3,
+        'kostka1image4': storeScene1.isSet4,
+        'kostka1image5': storeScene1.isSet5,
+        'kostka1image6': storeScene1.isSet6
+    }" v-if="storeScene1.ifWidokKostki" role="img" alt="ikona widoku kostki"></div>
     </div>
 </template>
 
@@ -38,6 +48,16 @@
     top: 0px;
     left: 0px;
     position: absolute;
+}
+
+.pionek1 {
+    background-image: url("../assets/pionek.png");
+    background-size: 116px 116px;
+    background-repeat: no-repeat;
+    height: 116px;
+    width: 116px;
+    position: absolute;
+
 }
 
 .sr-only {
@@ -154,6 +174,33 @@
     margin-right: 1em;
 }
 
+.kostka1image1 {
+    background-image: url("../assets/kostka_1oczko.png");
+   
+}
+
+.kostka1image2 {
+    background-image: url("../assets/kostka_2oczka.png");
+    
+}
+
+.kostka1image3 {
+    background-image: url("../assets/kostka_3oczka.png");
+}
+
+.kostka1image4 {
+    background-image: url("../assets/kostka_4oczka.png");
+}
+
+.kostka1image5 {
+    background-image: url("../assets/kostka_5oczek.png");
+}
+
+.kostka1image6 {
+    background-image: url("../assets/kostka_6oczek.png");
+}
+
+
 .rzut1{
      font-size: 3.3em;
     font-style: bold;
@@ -174,6 +221,11 @@
     position: absolute;
     top: 710px;
     left: 1576px;
+    background-size: 200px 200px;
+    background-repeat: no-repeat;
+     height: 200px;
+    width: 200px;
+    z-index: 2;
     
 }
 </style>
