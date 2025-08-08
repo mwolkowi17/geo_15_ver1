@@ -2,10 +2,10 @@ import { defineStore } from "pinia";
 
 export const useMainCompStore = defineStore("mianComp1", {
   state: () => ({
-    IfStart: true,
+    IfStart: false,
     IfIsntruction: false,
     IfLevelOneChoices: false,
-    IfMainComp1: false,
+    IfMainComp1: true,
     //flagi sterujące focusem w komponentach
     ifInstructionFocusOn: false,
     IfLevelOneChoicesFocusOn: false,
