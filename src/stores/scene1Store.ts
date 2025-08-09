@@ -12,13 +12,16 @@ export const useScene1Store = defineStore("scene1Store", {
     isSet6: false,
     ifRzucKostka: true,
     wyrzuconaWartoscKostki: "",
-    pionek_left: 30,
-    pionek_top: 330,
+    pionek_left: 110,
+    pionek_top: 205,
     kontrolka_ruch_na_planszy: true,
     krok_gracz1_na_planszy: 0,
     pozycje_pionka_gracza1: gameData.pozycja_pionka,
     ifWidokQuizz: false,
     ifWidokTrap: false,
+    liczba_wyrzucona: 0,
+    liczba_wpadek: 0,
+    ruch_lokalny: 0,
   }),
 
   getters: {},
@@ -30,6 +33,33 @@ export const useScene1Store = defineStore("scene1Store", {
       //========================================================================================
       this.ifWidokKostki = true;
       console.log("rzut");
+
+      // nowa funkcjonalnosc ograniczająca ilośc wpadek
+      let wartoscWyrzuconaFirst = metodyPomocnicze.rzucaj();
+      console.log("oczka: " + wartoscWyrzuconaFirst);
+      if (this.liczba_wpadek < 2) {
+        console.log("ilość wpadek: " + this.liczba_wpadek);
+        this.liczba_wpadek = wartoscWyrzuconaFirst;
+      }
+      if (
+        this.liczba_wpadek >= 2 &&
+        gameData.pulapki.includes(
+          this.krok_gracz1_na_planszy + wartoscWyrzuconaFirst + 1
+        ) === true
+      ) {
+        console.log("zmieniam");
+
+        if (wartoscWyrzuconaFirst < 5) {
+          this.liczba_wyrzucona = wartoscWyrzuconaFirst + 1;
+        } else {
+          this.liczba_wyrzucona = wartoscWyrzuconaFirst - 1;
+        }
+      } else {
+        console.log("ilość wpadek powyżej: " + this.liczba_wpadek);
+        this.liczba_wyrzucona = wartoscWyrzuconaFirst;
+      }
+      //========================================koniec tej funcjonalnosci===============================================
+
       let x = metodyPomocnicze.rzucaj();
       this.wyrzuconaWartoscKostki = "Kostka - ilość oczek: " + (x + 1);
       let wynik_rzutu = x;
@@ -54,7 +84,7 @@ export const useScene1Store = defineStore("scene1Store", {
       console.log(i);
       console.log(wynik_rzutu);
 
-      let ruch_lokalny = 0;
+      //let ruch_lokalny = 0;
       // //!!============================ruch pionka loop =========================================
       const myLoopPionek = (
         arg_A: string,
@@ -76,21 +106,21 @@ export const useScene1Store = defineStore("scene1Store", {
           //console.log(arg_B)
           console.log(arg_C);
           console.log(arg_B[arg_C + i]);
-
+          console.log("ruch lokalny: " + this.ruch_lokalny);
           //arg_A.setPosition(arg_B[arg_C + i][0], arg_B[arg_C + i][1]);
 
-          if (ruch_lokalny >= 15) {
+          if (this.ruch_lokalny >= 15) {
             console.log("Zwycięstwo!");
             this.kontrolka_ruch_na_planszy = false;
             console.log("wygrałeś!!!");
             //wywolanie_sceny_koncowej();
           }
 
-          ruch_lokalny++;
+          this.ruch_lokalny++;
 
           i++; //  increment the counter
 
-          if (i <= wynik_rzutu && ruch_lokalny <= 15) {
+          if (i <= wynik_rzutu && this.ruch_lokalny <= 15) {
             myLoopPionek(arg_A, arg_B, arg_C); //  ..  again which will trigger another
           } else {
             //dodanie_krokow();
