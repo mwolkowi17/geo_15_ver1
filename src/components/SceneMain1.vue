@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { useScene1Store } from '../stores/scene1Store';
+import SceneQuizz1 from './SceneQuizz1.vue';
 
 const storeScene1 = useScene1Store()
 </script>
@@ -37,6 +38,9 @@ const storeScene1 = useScene1Store()
         'kostka1image6': storeScene1.isSet6
     }" v-if="storeScene1.ifWidokKostki" role="img" alt="ikona widoku kostki"></div>
     </div>
+      <SceneQuizz1 v-if="storeScene1.ifWidokQuizz"
+        @koniec-quizz="storeScene1.ifWidokQuizz, storeScene1.ifWidokKostki = true"
+        @odejmij-szanse="console.log('odejmij szanse')" msg="Hej" />
 </template>
 
 <style scoped>
