@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { useScene1Store } from '../stores/scene1Store';
 import SceneQuizz1 from './SceneQuizz1.vue';
+import SceneTrap from './SceneTrap.vue';
 
 const storeScene1 = useScene1Store()
 </script>
@@ -41,6 +42,7 @@ const storeScene1 = useScene1Store()
       <SceneQuizz1 v-if="storeScene1.ifWidokQuizz"
         @koniec-quizz="storeScene1.ifWidokQuizz, storeScene1.ifWidokKostki = true"
         @odejmij-szanse="console.log('odejmij szanse')" msg="Hej" />
+            <SceneTrap v-if="storeScene1.ifWidokTrap" />
 </template>
 
 <style scoped>
